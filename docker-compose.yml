@@ -1,0 +1,88 @@
+version: '3.8'
+services:
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices
+    environment:
+      - SPRING_APPLICATION_NAME=eureka-server
+
+  api-gateway:
+    build: ./API_Gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+      - user-service
+      - company-service
+    networks:
+      - microservices
+    environment:
+      - SPRING_APPLICATION_NAME=api-gateway
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "8091:8091"
+    depends_on:
+      - eureka-server
+      - postgres-user
+    networks:
+      - microservices
+    environment:
+      - SPRING_APPLICATION_NAME=user-service
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-user:5432/user_service
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1661
+
+  company-service:
+    build: ./company-service
+    container_name: company-service
+    ports:
+      - "8090:8090"
+    depends_on:
+      - eureka-server
+      - postgres-company
+    networks:
+      - microservices
+    environment:
+      - SPRING_APPLICATION_NAME=company-service
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-company:5432/company_service
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=1661
+
+  postgres-user:
+    image: postgres:latest
+    container_name: postgres-user
+    environment:
+      - POSTGRES_DB=user_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1661
+    ports:
+      - "5432:5432"
+    networks:
+      - microservices
+
+  postgres-company:
+    image: postgres:latest
+    container_name: postgres-company
+    environment:
+      - POSTGRES_DB=company_service
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1661
+    ports:
+      - "5433:5432"
+    networks:
+      - microservices
+
+networks:
+  microservices:
+    driver: bridge
