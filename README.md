@@ -67,6 +67,6 @@ method: DELETE
 http://localhost:8080/company-service/companies/5
 
 
-не мог заставить работать ломбок он у меня не хочет работат
+
 
 
