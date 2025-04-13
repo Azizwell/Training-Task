@@ -1,17 +1,17 @@
 package org.example.company_service.service.company;
 
-import org.example.company_service.dto.CompanyDto;
-import org.example.company_service.dto.UpdateCompanyDto;
-import org.springframework.http.HttpEntity;
+import org.example.company_service.dto.DtoForCompany.CompanyDto;
+import org.example.company_service.dto.DtoForCompany.UpdateCompanyDto;
+import org.springframework.http.ResponseEntity;
 
 
 public interface CompanyService {
 
-  HttpEntity<?> getAllCompany();
+  ResponseEntity<CompanyDto> getCompanyById(Long id);
 
-  HttpEntity<?> postCompany(CompanyDto companyDto);
+  ResponseEntity<CompanyDto> postCompany(CompanyDto companyDto);
 
-  HttpEntity<?> putCompany(UpdateCompanyDto updateCompanyDto);
+  ResponseEntity<CompanyDto> putCompany(UpdateCompanyDto updateCompanyDto);
 
-  HttpEntity<?> deleteCompany(Long id);
+  ResponseEntity<String> deleteCompany(Long id);
 }

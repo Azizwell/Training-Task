@@ -2,25 +2,32 @@ package org.example.company_service.entity;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "companies")
 public class Company {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+  @Column(name = "name", nullable = false, length = 255)
   private String name;
+  @Column(name = "budget", nullable = false)
   private Double budget;
 
-  @ElementCollection
-  private List<Long> userId = new ArrayList<>();
 
-// getter setter constructor
-  public Company(String name, Double budget, List<Long> userId) {
+  @OneToMany(
+          mappedBy = "company",
+          cascade = CascadeType.ALL, // все операции (удаление, обновление) переходят на сотрудников
+          orphanRemoval = true     // если сотрудник исключается из коллекции, он удаляется из БД
+  )
+  private List<Employee> employeesIds;
+
+  // getter setter constructor
+  public Company(String name, Double budget, List<Employee> employeesIds) {
     this.name = name;
     this.budget = budget;
-    this.userId = userId;
+    this.employeesIds = employeesIds;
   }
 
   public Company(String name, Double budget) {
@@ -32,8 +39,8 @@ public class Company {
 
   }
 
-  public void setUserId(List<Long> userId) {
-    this.userId = userId;
+  public void setUserId(List<Employee> employeesIds) {
+    this.employeesIds = employeesIds;
   }
 
   public Long getId() {
@@ -48,8 +55,8 @@ public class Company {
     return budget;
   }
 
-  public List<Long> getUserId() {
-    return userId;
+  public List<Employee> getUserId() {
+    return employeesIds;
   }
 
   public void setId(Long id) {
@@ -62,5 +69,15 @@ public class Company {
 
   public void setBudget(Double budget) {
     this.budget = budget;
+  }
+
+  @Override
+  public String toString() {
+    return "Company{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", budget=" + budget +
+            ", employeesIds=" + employeesIds +
+            '}';
   }
 }
