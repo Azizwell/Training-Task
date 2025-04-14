@@ -1,6 +1,7 @@
 package org.example.company_service.mapper;
 
 import org.example.company_service.dto.DtoForCompany.CompanyDto;
+import org.example.company_service.dto.DtoForCompany.UpdateCompanyDto;
 import org.example.company_service.entity.Company;
 import org.example.company_service.entity.Employee;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,20 @@ public class CompanyMapper {
 
     List<Employee> employee = new ArrayList<>();
     for (Long userId : companyDto.userIds()) {
+      employee.add(new Employee(userId, company));
+    }
+    company.setUserId(employee);
+
+    return company;
+  }
+
+  public static Company toUpdateEntity(UpdateCompanyDto updateCompanyDto) {
+    Company company = new Company();
+    company.setName(updateCompanyDto.name());
+    company.setBudget(updateCompanyDto.budget());
+
+    List<Employee> employee = new ArrayList<>();
+    for (Long userId : updateCompanyDto.userIds()) {
       employee.add(new Employee(userId, company));
     }
     company.setUserId(employee);

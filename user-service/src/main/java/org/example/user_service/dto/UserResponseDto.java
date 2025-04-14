@@ -1,10 +1,11 @@
 package org.example.user_service.dto;
 
-public record UpdateUserDto(
+public record UserResponseDto(
         Long id,
         String firstName,
         String lastName,
-        String phone
-
+        String phone,
+        CompanyResponseDto company
 ) {
+
 }

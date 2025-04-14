@@ -1,4 +1,5 @@
-package org.example.user_service.projection;
+package org.example.user_service.dto.feignDto;
+
 
 import java.util.List;
 
@@ -8,7 +9,6 @@ public class CompanyResponse {
   private String name;
   private Double budget;
   private List<Long> userIds;
-  private List<UserResponse> users;
 
   //getter setter constructor
   public Long getId() {
@@ -43,19 +43,10 @@ public class CompanyResponse {
     this.userIds = userId;
   }
 
-  public List<UserResponse> getUsers() {
-    return users;
-  }
-
-  public void setUsers(List<UserResponse> users) {
-    this.users = users;
-  }
-
-  public CompanyResponse(Long id, String name, Double budget, List<UserResponse> users) {
+  public CompanyResponse(Long id, String name, Double budget) {
     this.id = id;
     this.name = name;
     this.budget = budget;
-    this.users = users;
   }
 
   @Override
@@ -65,7 +56,6 @@ public class CompanyResponse {
             ", name='" + name + '\'' +
             ", budget=" + budget +
             ", userId=" + userIds +
-            ", users=" + users +
             '}';
   }
 }

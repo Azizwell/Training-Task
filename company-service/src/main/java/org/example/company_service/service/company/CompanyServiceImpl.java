@@ -43,13 +43,11 @@ public class CompanyServiceImpl implements CompanyService {
 
   @Override
   public ResponseEntity<CompanyDto> putCompany(UpdateCompanyDto updateCompanyDto) {
-    Company companyFound = companyRepository.findById(updateCompanyDto.id()).orElseThrow(
+    companyRepository.findById(updateCompanyDto.id()).orElseThrow(
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "company не найдено")
     );
-    companyFound.setName(updateCompanyDto.name());
-    companyFound.setBudget(updateCompanyDto.budget());
-
-    CompanyDto companyDto = CompanyMapper.toDto(companyRepository.save(companyFound));
+    Company updateEntity = CompanyMapper.toUpdateEntity(updateCompanyDto);
+    CompanyDto companyDto = CompanyMapper.toDto(companyRepository.save(updateEntity));
     log.info("Изменен выбранный company: {}", companyDto);
     return ResponseEntity.ok(companyDto);
   }

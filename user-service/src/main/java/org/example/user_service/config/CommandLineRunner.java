@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-//тут при запуске приложения добовит пользователя для наглядного примера
 @Configuration
 public class CommandLineRunner implements org.springframework.boot.CommandLineRunner {
   @Autowired
